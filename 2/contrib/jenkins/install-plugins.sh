@@ -389,13 +389,14 @@ main() {
 
     # Create lockfile manually before first run to make sure any explicit version set is used.
     echo "Creating initial locks..."
-    for plugin in `cat $@ | grep -v ^#`; do
-        if [ -z $plugin ]; then
+    cat $@ | grep -v '^#' | while read plugin;  do
+        if [[ -z $plugin ]]; then
             continue
         fi
         echo "Locking $plugin"
         mkdir "$(getLockFile "${plugin%%:*}")"
-    done
+    done 
+
 
     echo -e "\nAnalyzing war..."
     bundledPlugins="$(bundledPlugins)"
